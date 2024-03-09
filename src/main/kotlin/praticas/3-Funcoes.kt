@@ -11,7 +11,7 @@ val materiasENotas = mutableMapOf<String, MutableList<Double>>()
  * Recebe um array de notas (opcional)
  * Retorna true se conseguiu, false se não.
  */
-fun adicionarDisciplina(materia: String, notas: MutableList<Double>): Boolean {
+fun adicionarDisciplina(materia: String, notas: MutableList<Double> = mutableListOf()): Boolean {
     return materiasENotas.put(materia, notas) != null
 }
 
@@ -61,6 +61,9 @@ fun mostrarNotas(materia:String){
             for(nota:Double in listaNotas){
                 println("Nota ${cont++}: $nota")
             }
+
+            val media = calcularMedia(listaNotas)
+            println("Media da disciplina foi: $media")
         }
         else{
             println("Não foi possível mostrar as notas da matéria ${materia}")
@@ -73,45 +76,73 @@ fun mostrarNotas(materia:String){
 }
 
 /*Retorna a média obtida apartir de uma lista de notas */
-fun calcularMedia(){ }
+fun calcularMedia(notas: MutableList<Double>?): Double {
+    if(notas != null) {
+        return notas.sum() / notas.size
+    } else {
+        return 0.0
+    }
+}
 
 
 /**
  *Adiciona várias notas de uma só vez em uma matéria
  * retorne true se conseguiu adicionar, false se não consegiu.
  * */
-fun adicionarVariasNotas(materia:String, vararg nota:Double){}
+fun adicionarVariasNotas(materia: String, vararg notas: Double): Boolean {
+    val notasDaMateria = materiasENotas[materia] ?: return false
+    notasDaMateria.addAll(notas.toList())
+    return true
+}
 
 
 fun main(){
     // 1. adicionarDisciplinas -> adicione 1 disciplina ao map materiasENotas, através de atribuição possicional
-    
+    adicionarDisciplina("Estrutura de Dados", mutableListOf(7.5, 9.2, 5.0))
+
     // 2. adicionarDisciplinas -> adicione 1 disciplina ao map materiasENotas, através de atribuição nomeada
-    
+    adicionarDisciplina(materia="Programação para Dispositivos Móveis", notas=mutableListOf(5.5, 10.0, 6.2))
+
     // 3. adicionarDisciplinas -> altere a função adicionarDisciplinas para que o parametro notas possua um valor padrão. Dica: utilize mutableListOf()
-    
+    adicionarDisciplina("Padrões de Projeto")
+
     // 4. adicionarDisciplinas -> adicione 1 disciplina ao map materiasENotas, sem atribuir valores a notas
-    
+    adicionarDisciplina("GPS")
+
     // 5. adicionarNota -> adicione 3 notas para as 3 disciplinas
-    
+    adicionarNota("Estrutura de Dados", 8.2)
+    adicionarNota("GPS", 2.3)
+    adicionarNota("Programação para Dispositivos Móveis", 10.0)
+
     // 6. mostrarNotas -> Mostre as notas das 3 disciplinas
+    mostrarNotas("Estrutura de Dados")
+    mostrarNotas("Programação para Dispositivos Móveis")
+    mostrarNotas("GPS")
     
     // 7. adicionarDisciplina -> adicione mais 1 disciplina
+    adicionarDisciplina("Empreendedorismo")
     
     // 8. adicionarVariasNotas -> implemente o metodo adicionarVariasNotas();
-    
+    // feito
+
     // 9. adicionarVariasNotas -> adicione 3 notas para a disciplina que você acabou de criar
+    adicionarVariasNotas("Empreendedorismo", 5.5, 1.2, 9.2)
     
     // 10. mostrarNotas -> mostre as notas da disciplina que você acabou de criar;
+    mostrarNotas("Empreendedorismo")
     
     // Bônus: (Não vai ganhar nada, ou melhor mais ganhar mais conhecimento >:O)
     
     // 11: calcularMedia -> Implemente a função calcularMedia()
+    // check
     
     // 12: calcularMedia -> calcule a media de 2 disciplinas
+    println(calcularMedia(materiasENotas["Empreendedorismo"]))
     
     // 13: mostrarNotas -> altere o mostrarNotas() para que ele mostre também a media das disciplinas
+    // check
     
     // 14: mostrarNotas -> mostre as notas de 1 disciplina 
+    mostrarNotas("Estrutura de Dados")
 
 }
